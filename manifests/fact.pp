@@ -23,7 +23,7 @@ define metadata_fact::fact (
 
   file { "/etc/puppetlabs/facter/facts.d/${metadata_name}.${metadata_type}":
     ensure  => file,
-    content => template($metadata_template),
+    content => template("metadata_fact/${metadata_template}"),
     group   => '0',
     mode    => '0644',
     owner   => '0',
