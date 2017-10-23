@@ -1,31 +1,41 @@
-define metadata_fact::fact (
-  $metadata_key   = $title,
-  $metadata_value = hiera("metadata_fact::${title}", 'None'),
-  $metadata_type  = 'json',
-){
-  if ! defined(Class['metadata_fact']) {
-    fail("You must include the 'metadata_fact' base class before using any of it's defined resources.")
+# external_fact::fact
+#
+# A description of what this defined type does
+#
+# @summary A short summary of the purpose of this defined type.
+#
+# @example
+#   external_fact::fact { 'namevar': }
+define external_fact::fact(
+  String $external_fact_key   = $title,
+  String $external_fact_value = hiera("external_fact::${title}", 'None'),
+  String $external_fact_type  = 'json',
+) {
+
+  if ! defined(Class['external_fact']) {
+    fail("You must include the 'external_fact' base class before using any of it's defined resources.")
   }
 
-  if $metadata_fact::site_id {
-    $metadata_name = "${metadata_fact::site_id}_${metadata_key}"
+  if $external_fact::site_id {
+    $external_fact_name = "${external_fact::site_id}_${external_fact_key}"
   }
   else {
-    $metadata_name = $metadata_key
+    $external_fact_name = $external_fact_key
   }
 
-  $metadata_template = $metadata_type ? {
-    'json'  => 'metadata_fact.json.erb',
-    'txt'   => 'metadata_fact.txt.erb',
-    'yaml'  => 'metadata_fact.yaml.erb',
-    default => 'metadata_fact.json.erb',
+  $external_fact_template = $external_fact_type ? {
+    'json'  => 'external_fact.json.erb',
+    'txt'   => 'external_fact.txt.erb',
+    'yaml'  => 'external_fact.yaml.erb',
+    default => 'external_fact.json.erb',
   }
 
-  file { "/etc/puppetlabs/facter/facts.d/${metadata_name}.${metadata_type}":
+  file { "/etc/puppetlabs/facter/facts.d/${external_fact_name}.${external_fact_type}":
     ensure  => file,
-    content => template("metadata_fact/${metadata_template}"),
+    content => template("external_fact/${external_fact_template}"),
+    owner   => '0',
     group   => '0',
     mode    => '0644',
-    owner   => '0',
   }
+
 }
