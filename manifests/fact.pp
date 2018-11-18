@@ -7,8 +7,8 @@
 # @example
 #   external_fact::fact { 'namevar': }
 define external_fact::fact(
-  Any $external_fact_value,
-  String $external_fact_key  = $title,
+  String $external_fact_value,
+  String $external_fact_name  = $title,
   # String $external_fact_value = lookup("external_fact::${title}", 'None')
 ) {
 
@@ -17,13 +17,19 @@ define external_fact::fact(
   }
 
   if $external_fact::site_id {
-    $external_fact_name = "${external_fact::site_id}_${external_fact_key}"
+    if ($external_fact_name == 'site_id') {
+      $external_fact_key = $external_fact_name
+    }
+    else {
+      $external_fact_key = "${external_fact::site_id}_${external_fact_name}"
+    }
+
   }
   else {
-    $external_fact_name = $external_fact_key
+    $external_fact_key = $external_fact_name
   }
 
-  file { "/etc/puppetlabs/facter/facts.d/${external_fact_name}.json":
+  file { "/etc/puppetlabs/facter/facts.d/${external_fact_key}.json":
     ensure  => file,
     content => template('external_fact/external_fact.json.erb'),
     owner   => '0',

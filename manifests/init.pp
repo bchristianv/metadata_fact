@@ -14,7 +14,7 @@ class external_fact (
 
   if $site_id {
     external_fact::fact { 'site_id':
-      external_fact_value => $site_id,
+      external_fact_value => "\"${site_id}\"",
       require             => Class['external_fact::config'],
     }
   }
