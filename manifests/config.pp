@@ -14,11 +14,12 @@ class external_fact::config {
     mode   => '0755',
   }
 
-  file { '/etc/puppetlabs/facter':
-    ensure => directory,
-  }
+  $fact_directories = [
+    '/etc/puppetlabs/facter',
+    '/etc/puppetlabs/facter/facts.d'
+  ]
 
-  file { '/etc/puppetlabs/facter/facts.d':
+  file { $fact_directories:
     ensure => directory,
   }
 
