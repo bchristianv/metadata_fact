@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe 'external_fact::fact' do
   let(:pre_condition) do
-    'include external_fact'
+    "class { 'external_fact': site_id => 'my_site' }"
   end
-  let(:title) { 'namevar' }
+  let(:title) { 'foo' }
   let(:params) do
-    {}
+    { 'external_fact_value' => 'bar' }
   end
 
   on_supported_os(facterversion: '2.4').each do |os, os_facts|

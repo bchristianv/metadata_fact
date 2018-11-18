@@ -6,13 +6,16 @@
 #
 # @example
 #   include external_fact
-class external_fact ($site_id = undef) {
+class external_fact (
+  Optional[String] $site_id
+) {
 
   include external_fact::config
 
   if $site_id {
     external_fact::fact { 'site_id':
       external_fact_value => $site_id,
+      require             => Class['external_fact::config'],
     }
   }
 

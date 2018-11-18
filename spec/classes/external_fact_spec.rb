@@ -5,6 +5,10 @@ describe 'external_fact' do
     context "on #{os}" do
       let(:facts) { os_facts }
 
+      let(:params) do
+        { 'site_id' => 'my_site' }
+      end
+
       it { is_expected.to compile }
     end
   end
